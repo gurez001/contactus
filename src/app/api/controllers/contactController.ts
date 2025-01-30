@@ -24,18 +24,15 @@ export class ContactController {
       // Create the contact document
       const contactData: Partial<IContact> = {
         ...result.data,
-        createdAt: new Date(),
         envelopeTime: 0, // You might want to set this to a meaningful value
       };
 
       // Send email
       const emailResult: any = await contactus(result.data);
-      console.log("Email sent:", emailResult);
       const updateddata: any = {
         name: result.data.name,
         email: result.data.email,
         message: result.data.message,
-        createdAt: Date,
         accepted: emailResult?.accepted,
         ehlo: emailResult?.ehlo,
         response: emailResult?.response,
@@ -45,19 +42,9 @@ export class ContactController {
         messageSize: emailResult?.messageSize,
         messageId: emailResult?.messageId,
       };
+      console.log("New contact created:", updateddata);
       const newContact = await Contact.create(updateddata);
       console.log("New contact created:", newContact);
-
-      //   // Update the contact document with email sending results
-      //   if (emailResult && emailResult.messageId) {
-      //     await Contact.findByIdAndUpdate(newContact._id, {
-      //       messageId: emailResult.messageId,
-      //       messageTime: emailResult.messageTime,
-      //       messageSize: emailResult.messageSize,
-      //       accepted: emailResult.accepted,
-      //       rejected: emailResult.rejected,
-      //     });
-      //   }
 
       return {
         success: true,

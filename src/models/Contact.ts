@@ -5,7 +5,6 @@ export interface IContact extends Document {
   name: string;
   email: string;
   message: string;
-  createdAt: Date;
   accepted?: any[];
   rejected?: any[];
   response?: string;
@@ -36,10 +35,6 @@ const contactSchema = new Schema<IContact>({
   message: {
     type: String,
     required: [true, "Message is required"],
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now,
   },
   accepted: {
     type: [Schema.Types.Mixed],
@@ -73,7 +68,9 @@ const contactSchema = new Schema<IContact>({
     type: Number,
     default: 0,
   },
-});
+}, {
+    timestamps: true, // Automatically adds createdAt and updatedAt fields
+  });
 
 // Create and export the model
 const Contact =
